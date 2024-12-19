@@ -28,17 +28,17 @@ main(int argc, char *argv[])
     // testClass.runWorker2_2();
     // testClass.runWorker2_3(numbers);
 
-    PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
+    // PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
 
-    // PThreadCppWrapper::run(
-    //   thread,
-    //   [](int a, std::string b) {
-    //       qDebug() << "hiiiiiiii";
-    //       qDebug() << "this is sohrabs wrapper for p_fucking_thread.";
-    //       qDebug() << "this is the first argument:" << a;
-    //       qDebug() << "this is the second argument:" << b;
-    //   },
-    //   123, std::string("the string"));
+    PThreadCppWrapper::run(
+      thread,
+      [](int a, std::string b) {
+          qDebug() << "hiiiiiiii";
+          qDebug() << "this is sohrabs wrapper for p_fucking_thread.";
+          qDebug() << "this is the first argument:" << a;
+          qDebug() << "this is the second argument:" << b;
+      },
+      123, std::string("the string"));
 
     return a.exec();
 }
