@@ -11,6 +11,7 @@ public:
 
     qint64 worker1();
     qint64 worker2(const std::vector<int> &numbers);
+    void   runWorker1();
 
 signals:
 
