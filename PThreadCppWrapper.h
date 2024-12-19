@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <tuple>
 
-namespace PThreadBySohrab
+namespace PThreadCppWrapper
 {
 
 template <class... Types>
@@ -70,4 +70,4 @@ run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
         // delete data;
     });
 }
-};    // namespace PThreadBySohrab
+};    // namespace PThreadCppWrapper

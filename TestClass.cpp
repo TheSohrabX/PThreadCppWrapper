@@ -25,5 +25,5 @@ TestClass::worker2(const std::vector<int> &numbers)
 void
 TestClass::runWorker1()
 {
-    PThreadBySohrab::run(m_thread, this, &TestClass::worker1);
+    PThreadCppWrapper::run(m_thread, this, &TestClass::worker1);
 }
