@@ -16,6 +16,7 @@ public:
     void   runWorker1();
     void   runWorker2();
     void   runWorker2_2();
+    void   runWorker2_3(const std::vector<int> &numbers);
 
 private:
     pthread_t        m_thread;

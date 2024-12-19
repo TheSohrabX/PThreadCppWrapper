@@ -44,3 +44,9 @@ TestClass::runWorker2_2()
     std::vector<int> numbers = {10, 20, 30, 40, 50, 60, 70, 80, 90};
     PThreadCppWrapper::run(m_thread, this, &TestClass::worker2, numbers);
 }
+
+void
+TestClass::runWorker2_3(const std::vector<int> &numbers)
+{
+    PThreadCppWrapper::run(m_thread, this, &TestClass::worker2, numbers);
+}

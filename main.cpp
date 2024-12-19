@@ -17,12 +17,12 @@ main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    // TestClass        testClass;
+    TestClass        testClass;
     // pthread_t        thread;
-    // std::vector<int> numbers = {10, 20, 30, 40, 50, 60, 70, 80, 90};
+    std::vector<int> numbers = {10, 20, 30, 40, 50, 60, 70, 80, 90};
     // PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
 
-    worker2Caller();
+    // worker2Caller();
     // testClass.runWorker1();
 
     return a.exec();
