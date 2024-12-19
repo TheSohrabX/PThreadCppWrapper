@@ -12,10 +12,13 @@ template <class... Types>
 using DecayedTuple = std::tuple<std::decay_t<Types>...>;
 
 template <class Class, class Function, class... Args>
-void
+auto
 invoke(Class *instance, Function &&func, Args &&...args)
 {
-    (instance->*func)(std::forward<Args>(args)...);
+    if constexpr(std::is_member_function_pointer_v<Function>)
+        (instance->*func)(std::forward<Args>(args)...);
+    else
+        func(std::forward<Args>(args)...);
 }
 
 template <class Function, class... Args>
@@ -66,8 +69,10 @@ run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
       new ThreadData {instance, std::forward<Function>(func), {std::forward<Args>(args)...}};
 
     run(thread, [&]() {
-        invoke(data->instance, data->func, std::forward<DecayedTuple<Args>>(data->args)...);
-        // delete data;
+        invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
+                                         std::forward<Function>(data->func),
+                                         std::forward<decltype(args)>(args)...);
+        delete data;
     });
 }
 };    // namespace PThreadCppWrapper

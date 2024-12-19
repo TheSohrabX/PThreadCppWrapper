@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PThreadCppWrapper.h"
+
 #include <QObject>
 
 class TestClass : public QObject
@@ -12,8 +14,10 @@ public:
     qint64 worker1();
     qint64 worker2(const std::vector<int> &numbers);
     void   runWorker1();
+    void   runWorker2();
 
 private:
     pthread_t        m_thread;
     std::vector<int> m_numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 };
+
