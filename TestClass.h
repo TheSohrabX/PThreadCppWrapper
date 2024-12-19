@@ -15,6 +15,7 @@ public:
     qint64 worker2(const std::vector<int> &numbers);
     void   runWorker1();
     void   runWorker2();
+    void   runWorker2_2();
 
 private:
     pthread_t        m_thread;
