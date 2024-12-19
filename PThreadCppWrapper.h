@@ -2,6 +2,7 @@
 
 #include <bits/shared_ptr.h>
 #include <functional>
+#include <iostream>
 #include <pthread.h>
 #include <tuple>
 
@@ -60,19 +61,29 @@ run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
 {
     struct ThreadData
     {
-        Class                *instance;
-        Function              func;
-        DecayedTuple<Args...> args;
+        Class              *instance;
+        Function            func;
+        std::tuple<Args...> args;
     };
 
     auto *data =
       new ThreadData {instance, std::forward<Function>(func), {std::forward<Args>(args)...}};
 
-    run(thread, [&]() {
-        invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
-                                         std::forward<Function>(data->func),
-                                         std::forward<decltype(args)>(args)...);
-        delete data;
-    });
+    run(
+      thread,
+      [data](auto &...args) {
+          invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
+                                           std::forward<Function>(data->func),
+                                           std::forward<decltype(args)>(args)...);
+          delete data;
+      },
+      std::forward<decltype(args)>(args)...);
 }
 };    // namespace PThreadCppWrapper
+
+// run(thread, [&]() {
+//     invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
+//                                      std::forward<Function>(data->func),
+//                                      std::forward<decltype(args)>(args)...);
+//     delete data;
+// });

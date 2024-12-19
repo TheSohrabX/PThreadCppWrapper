@@ -6,6 +6,11 @@ TestClass::TestClass(QObject *parent) :
     QObject {parent}
 {}
 
+TestClass::~TestClass()
+{
+    _pthread_cleanup_dest(m_thread);
+}
+
 qint64
 TestClass::worker1()
 {

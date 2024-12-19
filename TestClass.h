@@ -10,6 +10,7 @@ class TestClass : public QObject
 
 public:
     explicit TestClass(QObject *parent = nullptr);
+    ~TestClass() override;
 
     qint64 worker1();
     qint64 worker2(const std::vector<int> &numbers);
