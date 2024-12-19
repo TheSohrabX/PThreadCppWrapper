@@ -2,7 +2,6 @@
 
 #include <bits/shared_ptr.h>
 #include <functional>
-#include <iostream>
 #include <pthread.h>
 #include <tuple>
 
