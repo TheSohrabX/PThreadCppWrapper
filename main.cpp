@@ -25,8 +25,8 @@ main(int argc, char *argv[])
     // worker2Caller();
     // testClass.runWorker1();
     // testClass.runWorker2();
-    testClass.runWorker2_2();
-    // testClass.runWorker2_3(numbers);
+    // testClass.runWorker2_2();
+    testClass.runWorker2_3(numbers);
 
     // PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
 
