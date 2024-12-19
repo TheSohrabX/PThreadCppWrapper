@@ -10,6 +10,7 @@ public:
     explicit TestClass(QObject *parent = nullptr);
 
     qint64 worker1();
+    qint64 worker2(const std::vector<int> &numbers);
 
 signals:
 
