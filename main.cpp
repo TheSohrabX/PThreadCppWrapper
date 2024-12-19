@@ -22,9 +22,9 @@ main(int argc, char *argv[])
     TestClass        testClass;
     std::vector<int> numbers = {10, 20, 30, 40, 50, 60, 70, 80, 90};
 
-    worker2Caller();
+    // worker2Caller();
     // testClass.runWorker1();
-    // testClass.runWorker2();
+    testClass.runWorker2();
     // testClass.runWorker2_2();
     // testClass.runWorker2_3(numbers);
 
