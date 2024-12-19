@@ -23,7 +23,10 @@ main(int argc, char *argv[])
     // PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
 
     // worker2Caller();
-    // testClass.runWorker1();
+    testClass.runWorker1();
+    // testClass.runWorker2();
+    // testClass.runWorker2_2();
+    // testClass.runWorker2_3(numbers);
 
     return a.exec();
 }
