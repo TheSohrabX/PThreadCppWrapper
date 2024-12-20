@@ -75,25 +75,14 @@ template <class Class,
 auto
 run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
 {
-    struct ThreadData
-    {
-        Class              *instance;
-        Function            func;
-        std::tuple<Args...> args;
-    };
-
-    auto *data =
-      new ThreadData {instance, std::forward<Function>(func), {std::forward<Args>(args)...}};
-
     run(
       thread,
-      [data](auto &...args) {
-          invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
-                                           std::forward<Function>(data->func),
+      [](auto *instance, auto func, auto &...args) {
+          invoke<Class, Function, Args...>(std::forward<decltype(instance)>(instance),
+                                           std::forward<decltype(func)>(func),
                                            std::forward<decltype(args)>(args)...);
-          delete data;
       },
-      std::forward<decltype(args)>(args)...);
+      instance, func, std::forward<decltype(args)>(args)...);
 }
 
 template <
@@ -124,14 +113,16 @@ class Thread
 {
 
 public:
-    Thread() = default;
+    Thread();
 
-    ~Thread() { _pthread_cleanup_dest(m_thread); }
+    ~Thread();
 
-    void
-    start()
+    void start();
+
+    static pthread_t
+    currentThreadID()
     {
-        run();
+        return pthread_self();
     }
 
 protected:
@@ -141,4 +132,33 @@ private:
     pthread_t m_thread;
 };
 
-};    // namespace PThreadCppWrapper
+};    // namespace Spthread
+
+// template <class Class,
+//           typename Function,
+//           typename... Args,
+//           typename std::enable_if<std::is_member_function_pointer<Function>::value, int>::type = 0>
+// auto
+// run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
+// {
+//     struct ThreadData
+//     {
+//         Class              *instance;
+//         Function            func;
+//         std::tuple<Args...> args;
+//     };
+
+//     ThreadData d {instance, std::forward<Function>(func), {std::forward<Args>(args)...}};
+
+//     std::shared_ptr<ThreadData> data = std::make_shared<ThreadData>(d);
+
+//     run(
+//       thread,
+//       [data](auto &...args) {
+//           invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
+//                                            std::forward<Function>(data->func),
+//                                            std::forward<decltype(args)>(args)...);
+//       },
+//       std::forward<decltype(args)>(args)...);
+// }
+
