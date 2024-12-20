@@ -1,6 +1,6 @@
-# PThread Cpp Wrapper
+# Spthread: A C++ Wrapper for pthread
 
-this tool is a thin cpp wrapper for pthrad functions.
+this tool is a thin c++ wrapper for pthrad functions.
 
 i'm working on it to cover more funcion for better integrity with C++.
 
