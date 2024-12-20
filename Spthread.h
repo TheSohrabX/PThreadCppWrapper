@@ -7,9 +7,8 @@
 #include <tuple>
 #include <type_traits>
 
-namespace PThreadCppWrapper
+namespace Spthread
 {
-
 
 template <typename T>
 struct is_lambda
@@ -17,21 +16,6 @@ struct is_lambda
     inline static constexpr auto value = std::is_class<
       typename std::remove_reference<typename std::remove_pointer<T>::type>::type>::value;
 };
-
-template <typename T>
-void
-check_lambda(T &&)
-
-{
-    if constexpr(is_lambda<T>::value)
-    {
-        std::cout << "It's a lambda!" << std::endl;
-    }
-    else
-    {
-        std::cout << "It's not a lambda!" << std::endl;
-    }
-}
 
 template <class... Types>
 using DecayedTuple = std::tuple<std::decay_t<Types>...>;
@@ -136,11 +120,25 @@ singleShot(Class *instance, Function &&func, Args &&...args)
     run(thread, instance, std::forward<Function>(func), std::forward<Args>(args)...);
 }
 
-};    // namespace PThreadCppWrapper
+class Thread
+{
 
-// run(thread, [&]() {
-//     invoke<Class, Function, Args...>(std::forward<Class *>(data->instance),
-//                                      std::forward<Function>(data->func),
-//                                      std::forward<decltype(args)>(args)...);
-//     delete data;
-// });
+public:
+    Thread() = default;
+
+    ~Thread() { _pthread_cleanup_dest(m_thread); }
+
+    void
+    start()
+    {
+        run();
+    }
+
+protected:
+    virtual void run() = 0;
+
+private:
+    pthread_t m_thread;
+};
+
+};    // namespace PThreadCppWrapper

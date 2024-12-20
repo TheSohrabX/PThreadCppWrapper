@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PThreadCppWrapper.h"
+#include "Spthread.h"
 
 #include <QObject>
 

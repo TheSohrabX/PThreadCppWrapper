@@ -34,24 +34,24 @@ TestClass::worker2(const std::vector<int> &numbers)
 void
 TestClass::runWorker1()
 {
-    PThreadCppWrapper::run(m_thread, this, &TestClass::worker1);
+    Spthread::run(m_thread, this, &TestClass::worker1);
 }
 
 void
 TestClass::runWorker2()
 {
-    PThreadCppWrapper::run(m_thread, this, &TestClass::worker2, m_numbers);
+    Spthread::run(m_thread, this, &TestClass::worker2, m_numbers);
 }
 
 void
 TestClass::runWorker2_2()
 {
     std::vector<int> numbers = {10, 20, 30, 40, 50, 60, 70, 80, 90};
-    PThreadCppWrapper::run(m_thread, this, &TestClass::worker2, numbers);
+    Spthread::run(m_thread, this, &TestClass::worker2, numbers);
 }
 
 void
 TestClass::runWorker2_3(const std::vector<int> &numbers)
 {
-    PThreadCppWrapper::run(m_thread, this, &TestClass::worker2, numbers);
+    Spthread::run(m_thread, this, &TestClass::worker2, numbers);
 }
