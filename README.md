@@ -2,7 +2,7 @@
 
 this tool is a thin c++ wrapper for pthrad functions.
 
-i'm working on it to cover more funcion for better integrity with C++.
+i'm working on it to cover more pthread funcions for better integrity with C++.
 
 till now, i only added support for pthread_create.
 
