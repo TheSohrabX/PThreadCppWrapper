@@ -16,11 +16,11 @@ i used Qt for making this project but the wrapper DOES NOT HAVE any dependency o
 ```CPP
 pthread_t thread;
 
-auto lambdaFunction = [](int a, std::string b) {
+auto lambdaFunction = [](int number, std::string string) {
   qDebug() << "hi";
   qDebug() << "this is a c++ wrapper for p_fucking_thread.";
-  qDebug() << "this is the first argument:" << a;
-  qDebug() << "this is the second argument:" << b;
+  qDebug() << "this is the first argument:" << number;
+  qDebug() << "this is the second argument:" << string;
 };
 
 Spthread::run(thread, lambdaFunction, 123, std::string("the string"));
@@ -28,11 +28,11 @@ Spthread::run(thread, lambdaFunction, 123, std::string("the string"));
 
 ---- OR
 ```CPP
-auto lambdaFunction = [](int a, std::string b) {
+auto lambdaFunction = [](int number, std::string string) {
   qDebug() << "hi";
   qDebug() << "this is a c++ wrapper for p_fucking_thread.";
-  qDebug() << "this is the first argument:" << a;
-  qDebug() << "this is the second argument:" << b;
+  qDebug() << "this is the first argument:" << number;
+  qDebug() << "this is the second argument:" << string;
 };
 
 Spthread::singleShot(lambdaFunction, 123, std::string("the string"));
@@ -50,7 +50,8 @@ worker(int num1, int num2, int num3)
     qDebug() << "this is the second number:" << num2;
     qDebug() << "this is the third number:" << num3;
 }
-
+```
+```CPP
 int
 main(int argc, char *argv[])
 {
@@ -64,21 +65,12 @@ main(int argc, char *argv[])
 ```
 ---- OR
 ```CPP
-void
-worker(int num1, int num2, int num3)
-{
-    qDebug() << Q_FUNC_INFO;
-    qDebug() << "this is the first number:" << num1;
-    qDebug() << "this is the second number:" << num2;
-    qDebug() << "this is the third number:" << num3;
-}
-
 int
 main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    Spthread::singleShot(&worker3, 123, 456, 789);
+    Spthread::singleShot(&worker, 123, 456, 789);
 
     return a.exec();
 }
@@ -199,10 +191,9 @@ main(int argc, char *argv[])
 ## 5. Using Spthread::Thread as base class (Like QThread):
 ----ThreadDriven.h
 ```CPP
-#ifndef THREADDRIVEN_H
-#define THREADDRIVEN_H
+#pragma once
 
-#include "./Spthread.h"
+#include "Spthread.h"
 
 class ThreadDriven : public Spthread::Thread
 {
@@ -216,7 +207,6 @@ private:
     void heavyTask();
 };
 
-#endif    // THREADDRIVEN_H
 ```
 ----ThreadDriven.cpp
 ```cPP
