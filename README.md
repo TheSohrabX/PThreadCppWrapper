@@ -146,7 +146,7 @@ Spthread::run(thread, &heavyTasks, &HeavyTasks::heavyTask2, numbers);
 
 ## 4. Running Member Function (from within):
 Consider that we have a class like this:
-
+----HeavyTasks.h
 ```CPP
 class HeavyTasks
 {
@@ -180,7 +180,9 @@ private:    // data members
     std::vector<int> m_numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     pthread_t        m_pthread;
 };
-
+```
+----main.cpp
+```CPP
 int
 main(int argc, char *argv[])
 {
