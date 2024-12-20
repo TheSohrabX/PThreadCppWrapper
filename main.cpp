@@ -38,15 +38,16 @@ main(int argc, char *argv[])
 
     // PThreadCppWrapper::run(thread, &testClass, &TestClass::worker2, numbers);
 
-    // auto             lambdaFunction = [](int a, std::string b) {
-    //     qDebug() << "hi";
-    //     qDebug() << "this is sohrabs wrapper for p_fucking_thread.";
-    //     qDebug() << "this is the first argument:" << a;
-    //     qDebug() << "this is the second argument:" << b;
-    // };
+    auto             lambdaFunction = [](int a, std::string b) {
+        qDebug() << "hi";
+        qDebug() << "this is sohrabs wrapper for p_fucking_thread.";
+        qDebug() << "this is the first argument:" << a;
+        qDebug() << "this is the second argument:" << b;
+    };
 
     // PThreadCppWrapper::run(thread, lambdaFunction, 123, std::string("the string"));
-    PThreadCppWrapper::run(thread, &worker3, 123, 456, 789);
-
+    // PThreadCppWrapper::singleShot(lambdaFunction, 123, std::string("the string"));
+    // PThreadCppWrapper::run(thread, &worker3, 123, 456, 789);
+    PThreadCppWrapper::singleShot(&worker3, 123, 456, 789);
     return a.exec();
 }

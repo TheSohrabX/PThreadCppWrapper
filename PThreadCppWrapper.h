@@ -2,6 +2,7 @@
 
 #include <bits/shared_ptr.h>
 #include <functional>
+#include <iostream>
 #include <pthread.h>
 #include <tuple>
 #include <type_traits>
@@ -13,16 +14,24 @@ namespace PThreadCppWrapper
 template <typename T>
 struct is_lambda
 {
-private:
-    template <typename C>
-    static constexpr auto check(C *) -> typename std::is_class<C>::type;
-    template <typename>
-    static constexpr std::false_type    check(...);
-    typedef decltype(check<T>(nullptr)) type;
-
-public:
-    static constexpr bool value = type::value;
+    inline static constexpr auto value = std::is_class<
+      typename std::remove_reference<typename std::remove_pointer<T>::type>::type>::value;
 };
+
+template <typename T>
+void
+check_lambda(T &&)
+
+{
+    if constexpr(is_lambda<T>::value)
+    {
+        std::cout << "It's a lambda!" << std::endl;
+    }
+    else
+    {
+        std::cout << "It's not a lambda!" << std::endl;
+    }
+}
 
 template <class... Types>
 using DecayedTuple = std::tuple<std::decay_t<Types>...>;
@@ -102,6 +111,31 @@ run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
       },
       std::forward<decltype(args)>(args)...);
 }
+
+template <
+  typename Function,
+  typename... Args,
+  typename std::enable_if<std::is_function<typename std::remove_pointer<Function>::type>::value ||
+                            std::is_function<Function>::value || is_lambda<Function>::value,
+                          int>::type = 0>
+auto
+singleShot(Function &&func, Args &&...args)
+{
+    pthread_t thread;
+    run(thread, std::forward<Function>(func), std::forward<Args>(args)...);
+}
+
+template <class Class,
+          typename Function,
+          typename... Args,
+          typename std::enable_if<std::is_member_function_pointer<Function>::value, int>::type = 0>
+auto
+singleShot(Class *instance, Function &&func, Args &&...args)
+{
+    pthread_t thread;
+    run(thread, instance, std::forward<Function>(func), std::forward<Args>(args)...);
+}
+
 };    // namespace PThreadCppWrapper
 
 // run(thread, [&]() {
