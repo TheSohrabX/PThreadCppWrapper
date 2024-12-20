@@ -4,9 +4,25 @@
 #include <functional>
 #include <pthread.h>
 #include <tuple>
+#include <type_traits>
 
 namespace PThreadCppWrapper
 {
+
+
+template <typename T>
+struct is_lambda
+{
+private:
+    template <typename C>
+    static constexpr auto check(C *) -> typename std::is_class<C>::type;
+    template <typename>
+    static constexpr std::false_type    check(...);
+    typedef decltype(check<T>(nullptr)) type;
+
+public:
+    static constexpr bool value = type::value;
+};
 
 template <class... Types>
 using DecayedTuple = std::tuple<std::decay_t<Types>...>;
@@ -40,7 +56,12 @@ invoker(void *arg)
     return nullptr;
 }
 
-template <class Function, class... Args>
+template <
+  typename Function,
+  typename... Args,
+  typename std::enable_if<std::is_function<typename std::remove_pointer<Function>::type>::value ||
+                            std::is_function<Function>::value || is_lambda<Function>::value,
+                          int>::type = 0>
 auto
 run(pthread_t &thread, Function &&func, Args &&...args)
 {
@@ -54,7 +75,10 @@ run(pthread_t &thread, Function &&func, Args &&...args)
     pthread_create(&thread, nullptr, &invoker<Function, Args...>, pthreadArg);
 }
 
-template <class Class, typename Function, typename... Args>
+template <class Class,
+          typename Function,
+          typename... Args,
+          typename std::enable_if<std::is_member_function_pointer<Function>::value, int>::type = 0>
 auto
 run(pthread_t &thread, Class *instance, Function &&func, Args &&...args)
 {
